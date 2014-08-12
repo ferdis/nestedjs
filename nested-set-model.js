@@ -2,49 +2,91 @@
 
 var NestedSetModel = function(model) {
 	this.model = [];
-	
+
 	for(var entry in model) {
-		var node = new NestedSetModelNode(model[entry], this);
+		if (!model.hasOwnProperty(entry)) {
+			continue;
+		}
+
+		var node = new NestedSetModelNode(model[entry], model);
 		this.model.push(node);
 	}
 
 	return this;
 }
 
-NestedSetModel.prototype.find = function(partial, strict) {
-	var results = [];
-	var strict = arguments.length === 2 ? strict : false;
+NestedSetModel.prototype.compareNodes = function(a, b, strict) {
+	var strict = strict || false;
 
-	this.model.map(function(node) {
-		for(var prop in Object.keys(partial)) {
-			if (node[prop] == partial[prop]) {
-				results.push(node);
-			}
+	if (a === b) {
+		return true;
+	}
+
+	var keys = [
+		Object.keys(a),
+		Object.keys(b)
+	];
+
+	if (strict && keys[0].length !== keys[1].length) {
+		return false;
+	}
+
+	for (var i = 0; i <= keys[1].length; i++) {
+		var prop = keys[1][i];
+
+
+		if (a[prop] !== b[prop]) {
+			return false;
 		}
-	});
+	}
 
-	return new NestedSetModel(results);
+	if (!strict) {
+		return true;
+	}
+
+	for (var prop in keys[0]) {
+		if (b[prop] !== undefined && a[prop] !== b[prop]) {
+			return false;
+		}
+
+		if (typeof a[prop] === 'object'
+			&& this.compareNodes(a[prop], b[prop], true) === false) {
+			return false
+		}
+	}
+
+	return true;
+}
+
+NestedSetModel.prototype.find = function(partial, strict) {
+	for (var key in this.model) {
+		if (!this.model.hasOwnProperty(key)) {
+			continue;
+		} else if (this.compareNodes(this.model[key], partial, strict)) {
+			return this.model[key];
+		}
+	}
 }
 
 var NestedSetModelNode = function(node, model) {
 	this.model = model;
 
 	var self = this;
-	Object.keys(node).forEach(function(v, k) {
-		self[k] = v;
+	Object.keys(node).forEach(function(prop) {
+		self[prop] = node[prop];
 	});
 }
 
 NestedSetModelNode.prototype.parents = function() {
 	var parents = [];
 	var self = this;
-	
+
 	this.model.map(function(node) {
 		if (self.left > node.left && self.right < node.right) {
 			parents.push(node);
 		}
 	});
-	
+
 	return parents;
 }
 
@@ -63,7 +105,7 @@ NestedSetModelNode.prototype.children = function() {
 
 
 NestedSetModelNode.prototype.isLeaf = function() {
-	return this.left - this.right === 1;
+	return this.right - this.left === 1;
 }
 
 NestedSetModelNode.prototype.isParent = function() {
@@ -71,7 +113,7 @@ NestedSetModelNode.prototype.isParent = function() {
 }
 
 NestedSetModelNode.prototype.isChild = function() {
-	return this.left > 0 && this.right < this.model.length;
+	return this.left > 0 && this.right < (this.model.length * 2);
 }
 
 var set = [
@@ -80,23 +122,30 @@ var set = [
 		title: 'root',
 		left: 1,
 		right: 6
-		}, {
-			id: 2,
-			title: 'middle',
-			left: 2,
-			right: 5,
-				}, {
-					id: 3,
-					title: 'last',
-					left: 3, 
-					right: 4
-		}
-	];
-
+	},
+	{
+		id: 2,
+		title: 'middle',
+		left: 2,
+		right: 5,
+	},
+	{
+		id: 3,
+		title: 'last',
+		left: 3,
+		right: 4
+	}
+];
 
 var model = new NestedSetModel(set);
 
-console.log(
-	model.find({ title: 'middle' })
-);
+if (model.find({ title: 'middle'}).isLeaf() === false) {
+	console.info('SUCCESS: {title: "middle"} is not a leaf node');
+} else {
+	console.error('FAIL: {title: "middle"} is a leaf node, but shouldn\'t be');
+}
+
+console.log('It\'s parents:', model.find({title: 'middle'}).parents());
+
+console.log('It\'s childrne:', model.find({title: 'middle'}).children());
 
