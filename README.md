@@ -14,6 +14,10 @@ database system, it's troublesome to implement procedurally.
 This library helps bridging the gap between back-end data structures
 and front-end implementations. 
 
+Example
+----
+Please refer to [example.js](example.js) for an example on usage.
+
 API
 ----
 The library follows a DSL-like usage structure, whereby method chaining
@@ -25,7 +29,7 @@ Please see [API.md](API.md) for more information.
 
 Requests
 ----
-I Highly encourage anybody using this library to suggest features
+I highly encourage anybody using this library to suggest features
 that will find useful, or features that are simply lacking.
 
 Please either create a issue, or feel free to submit a pull request.
