@@ -116,12 +116,23 @@ NestedSetModelNode.prototype.isChild = function() {
 	return this.left > 0 && this.right < (this.model.length * 2);
 }
 
+// An example input set
+/*
+
+			 root
+			/   \
+	     middle  parent
+	      /
+	    last
+
+ */
+
 var set = [
 	{
 		id: 1,
 		title: 'root',
 		left: 1,
-		right: 6
+		right: 8
 	},
 	{
 		id: 2,
@@ -130,10 +141,16 @@ var set = [
 		right: 5,
 	},
 	{
-		id: 3,
+		id: 4,
 		title: 'last',
 		left: 3,
 		right: 4
+	},
+	{
+		id: 3,
+		title: 'parent',
+		left: 6,
+		right: 7
 	}
 ];
 
