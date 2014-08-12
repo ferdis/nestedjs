@@ -3,6 +3,12 @@
 var NestedSetModel = function(model) {
     this.model = [];
 
+    // sort the set for deterministic order
+    model.sort(function(a, b)
+    {
+    	return a.left > b.left;
+    });
+
     for(var entry in model) {
         if (!model.hasOwnProperty(entry)) {
             continue;
@@ -92,13 +98,14 @@ NestedSetModelNode.prototype.parents = function() {
 
 NestedSetModelNode.prototype.children = function() {
     var children = [];
-    var self = this;
+    var num_items = Math.floor((this.right - this.left) / 2);
 
-    this.model.map(function(node) {
-        if (self.left < node.left && self.right > node.right) {
-            children.push(node);
-        }
-    });
+    // model has been sorted by left ascending, we can determine
+    // amount of children for this node, and optimize the lookup.
+    for (var i = this.left; i <= ((this.left + num_items) - 1); i++) {
+    	var node = this.model[i];
+        children.push(node);
+    }
 
     return children;
 }
@@ -119,11 +126,15 @@ NestedSetModelNode.prototype.isChild = function() {
 // An example input set
 /*
 
-             root
-            /   \
-         middle  parent
-          /
-        last
+             1 root 12
+             /      \
+        2 parent 9 10 middle 11
+           /
+       3 child 8
+         /
+      4 child 7
+       /
+   5 leaf 6
 
  */
 
@@ -132,37 +143,49 @@ var set = [
         id: 1,
         title: 'root',
         left: 1,
+        right: 12
+    },
+    {
+        id: 4,
+        title: 'child',
+        left: 3,
         right: 8
     },
     {
         id: 2,
-        title: 'middle',
+        title: 'parent',
         left: 2,
-        right: 5,
-    },
-    {
-        id: 4,
-        title: 'last',
-        left: 3,
-        right: 4
+        right: 9,
     },
     {
         id: 3,
-        title: 'parent',
-        left: 6,
+        title: 'middle',
+        left: 10,
+        right: 11
+    },
+    {
+        id:5,
+        title: 'child',
+        left: 4,
         right: 7
+    },
+    {
+        id:6,
+        title: 'leaf',
+        left: 5,
+        right: 6
     }
 ];
 
 var model = new NestedSetModel(set);
 
-if (model.find({ title: 'middle'}).isLeaf() === false) {
-    console.info('SUCCESS: {title: "middle"} is not a leaf node');
+if (model.find({ title: 'child', left: 3}).isLeaf() === false) {
+    console.info('SUCCESS: {title: "child", left: 3} is not a leaf node');
 } else {
-    console.error('FAIL: {title: "middle"} is a leaf node, but shouldn\'t be');
+    console.error('FAIL: {title: "child", left: 3} is a leaf node, but shouldn\'t be');
 }
 
-console.log('It\'s parents:', model.find({title: 'middle'}).parents());
+console.log('It\'s parents:', model.find({title: 'child', left: 3}).parents());
 
-console.log('It\'s childrne:', model.find({title: 'middle'}).children());
+console.log('It\'s childrne:', model.find({title: 'child', left: 3}).children());
 
