@@ -64,6 +64,7 @@ if (model.find({ title: 'child', left: 3}).isLeaf() === false) {
 
 console.log('It\'s parents:', model.find({title: 'child', left: 3}).parents());
 
-console.log('It\'s childrne:', model.find({title: 'child', left: 3}).children());
+console.log('It\'s children:', model.find({title: 'child', left: 3}).children());
 
+console.log('It\'s descendants:', model.find({title: 'child', left: 3}).descendants());
 

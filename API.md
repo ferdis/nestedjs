@@ -10,7 +10,7 @@ the hierachy of the set model.
 
 The latter is `NestedSetNodeModel`, which maintains it's own model based
 off it's parent `NestedSetModel` and properties required for a nested set
-item: `left` and `right`. 
+item: `left` and `right`.
 
 NestedSetModel
 ----
@@ -84,7 +84,19 @@ var parents = model.find({ left: 6 }).parents();
 
 **children()**
 
-This method will return all children as an array for any particular node.
+This method will return all immediate children as an array for any particular node.
+
+**Example**
+```javascript
+var children = model.find({ left: 6 }).children();
+```
+
+----
+
+
+**descendants()**
+
+This method will return all descendants as an array for any particular node.
 
 **Example**
 ```javascript
@@ -105,13 +117,13 @@ var isParent = model.find({ left: 6 }).isParent();
 
 ----
 
-**isChild()**
+**isDescendant()**
 
-Returns a boolean value based on whether the node is a child in the tree.
+Returns a boolean value based on whether the node is a descendant in the tree.
 
 **Example**
 ```javascript
-var isChild = model.find({ left: 6 }).isChild();
+var isDescendant = model.find({ left: 6 }).isDescendant();
 ```
 
 ----

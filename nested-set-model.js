@@ -96,15 +96,32 @@ NestedSetModelNode.prototype.parents = function() {
     return parents;
 }
 
-NestedSetModelNode.prototype.children = function() {
-    var children = [];
+NestedSetModelNode.prototype.descendants = function() {
+    var descendants = [];
     var num_items = Math.floor((this.right - this.left) / 2);
 
     // model has been sorted by left ascending, we can determine
-    // amount of children for this node, and optimize the lookup.
+    // amount of descendants for this node, and optimize the lookup.
     for (var i = this.left; i <= ((this.left + num_items) - 1); i++) {
     	var node = this.model[i];
-        children.push(node);
+        descendants.push(node);
+    }
+
+    return descendants;
+}
+
+NestedSetModelNode.prototype.children = function() {
+    var children = [];
+    var left = this.left - 1;
+
+    while(true) {
+        if ((left + 1) === (this.right  / 2)) {
+            break;
+        }
+
+        var child = this.model[left + 1];
+        children.push(child);
+        left = (child.right - 1) / 2;
     }
 
     return children;
@@ -119,13 +136,13 @@ NestedSetModelNode.prototype.isParent = function() {
     return !this.isLeaf();
 }
 
-NestedSetModelNode.prototype.isChild = function() {
+NestedSetModelNode.prototype.isDescendant = function() {
     return this.left > 0 && this.right < (this.model.length * 2);
 }
 
 // bootstrap
 if (typeof define !== 'undefined') {
 	define('NestedSetModel', NestedSetModel);
-} 
+}
 
 module.exports = NestedSetModel;
