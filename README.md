@@ -18,6 +18,11 @@ Example
 ----
 Please refer to [example.js](example.js) for an example on usage.
 
+This library is also available as an npm package:
+```
+npm install --save nestedjs
+```
+
 API
 ----
 The library follows a DSL-like usage structure, whereby method chaining
