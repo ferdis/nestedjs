@@ -1,0 +1,12 @@
+{
+	"name": "nestedjs",
+	"version": "1.0",
+	"author": "Ferdi Schmidt",
+	"repository": {
+		"url": "https://github.com/uitgewis/nestedjs"
+	},
+	"keywords": [
+		"nested set",
+		"nested set model"
+	}
+}
