@@ -3,9 +3,11 @@
 	"version": "1.0.1",
 	"description": "A lightweight library for working with the Nested Set Model",
 	"author": "Ferdi Schmidt",
+	"main": "nested-set-model.js",
 	"repository": {
 		"url": "https://github.com/uitgewis/nestedjs"
 	},
+	"license": "BSD-2-Clause",
 	"keywords": [
 		"nested set",
 		"nested set model"
