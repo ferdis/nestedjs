@@ -15,10 +15,10 @@ item: `left` and `right`.
 NestedSetModel
 ----
 
-**constructor(`array` model)**
+**constructor(`array` model, `object?` options)**
 
-The constructor takes a single argument, which is a collection of sets
-expressed as a single array.
+The constructor takes a two arguments, a mandatory collection of sets
+expressed as a single array and an optional object containing options.
 
 The constructor sorts the collection by left nodes ascending.
 This is done to optimize child lookups, as it only has to match
@@ -29,6 +29,13 @@ __Take note that utliple root nodes are not supported at this time.__
 **Example**
 ```javascript
 var model = new NestedSetModel(my_array);
+```
+
+If your original data source uses keys other than `left` and `right` you can pass them into the constructor using `options`:
+
+**Example**
+```javascript
+var model = new NestedSetModel(my_array, {left: 'l', right: 'r'});
 ```
 ----
 

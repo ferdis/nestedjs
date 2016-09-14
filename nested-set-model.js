@@ -1,16 +1,21 @@
 // nested set model (l;r) parent search
 
-var NestedSetModel = function(model) {
+var NestedSetModel = function(model, options) {
+
+    options = options || {};
+    this.leftKey = options.left || 'left';
+    this.rightKey =  options.right || 'key';
+
     this.model = [];
     this.index = {};
+
+    var self = this;
 
     // sort the set for deterministic order
     model.sort(function(a, b)
     {
-    	return a.left - b.left;
+        return a[self.leftKey] - b[self.leftKey];
     });
-
-    var self = this;
 
     // create an index
     for(var index in model) {
@@ -18,7 +23,7 @@ var NestedSetModel = function(model) {
             continue;
         }
 
-        this.index[model[index].right] = index;
+        this.index[model[index][this.rightKey]] = index;
     }
 
     for(var entry in model) {
@@ -90,9 +95,6 @@ var NestedSetModelNode = function(node, model, index) {
     this.model = model;
     this.index = index;
 
-    if (typeof node !== 'object')
-        debugger;
-
     var self = this;
     Object.keys(node).forEach(function(prop) {
         self[prop] = node[prop];
@@ -104,7 +106,7 @@ NestedSetModelNode.prototype.parents = function() {
     var self = this;
 
     this.model.map(function(node) {
-        if (self.left > node.left && self.right < node.right) {
+        if (self[self.model.leftKey] > node[self.model.leftKey] && self[self.model.rightKey] < node[self.model.rightKey]) {
             parents.push(new NestedSetModelNode(node, self.model, self.index));
         }
     });
@@ -114,10 +116,10 @@ NestedSetModelNode.prototype.parents = function() {
 
 NestedSetModelNode.prototype.descendants = function() {
     var descendants = [];
-    var num_items = Math.floor((this.right - this.left) / 2);
+    var num_items = Math.floor((this.model.rightKey - this.model.leftKey) / 2);
 
     for(var right in this.index) {
-        if (right < this.right && right > this.left) {
+        if (right < this.model.rightKey && right > this.model.leftKey) {
             var node = this.model[this.index[right]];
             descendants.push(new NestedSetModelNode(node, this.model, this.index));
         }
@@ -128,16 +130,16 @@ NestedSetModelNode.prototype.descendants = function() {
 
 NestedSetModelNode.prototype.children = function() {
     var children = [];
-    var right = this.right - 1;
+    var right = this.model.rightKey - 1;
 
     while(true) {
-        if (right === this.left) {
+        if (right === this.model.leftKey) {
             break;
         }
 
         var child = this.model[this.index[right]];
         children.push(new NestedSetModelNode(child, this.model, this.index));
-        right = child.left - 1;
+        right = child.model.leftKey - 1;
     }
 
     return children.reverse();
@@ -145,7 +147,7 @@ NestedSetModelNode.prototype.children = function() {
 
 
 NestedSetModelNode.prototype.isLeaf = function() {
-    return this.right - this.left === 1;
+    return this.model.rightKey - this.model.leftKey === 1;
 }
 
 NestedSetModelNode.prototype.isParent = function() {
@@ -153,7 +155,7 @@ NestedSetModelNode.prototype.isParent = function() {
 }
 
 NestedSetModelNode.prototype.isDescendant = function() {
-    return this.left > 0 && this.right < (this.model.length * 2);
+    return this.model.leftKey > 0 && this.model.rightKey < (this.model.length * 2);
 }
 
 // bootstrap
