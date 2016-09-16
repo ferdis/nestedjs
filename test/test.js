@@ -54,9 +54,9 @@ describe('NestedSetModel', function() {
             var model = new NestedSetModel(customKeyFixture, {left: 'lf', right: 'rg'});
             assert(!model.find({ title: 'child' }).isLeaf())
             assert(model.find({ title: 'leaf' }).isLeaf());
-            assert(model.find({title: 'child' }).parents().length);
-            assert(model.find({title: 'child' }).children().length);
-            assert(model.find({title: 'child' }).descendants().length);
+            assert(model.find({ title: 'child' }).parents().length);
+            assert(model.find({ title: 'child' }).children().length);
+            assert(model.find({ title: 'child' }).descendants().length);
         });
     });
 });
