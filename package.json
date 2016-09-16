@@ -1,15 +1,21 @@
 {
-	"name": "nestedjs",
-	"version": "1.1.0",
-	"description": "A lightweight library for working with the Nested Set Model",
-	"author": "Ferdi Schmidt",
-	"main": "nested-set-model.js",
-	"repository": {
-		"url": "https://github.com/uitgewis/nestedjs"
-	},
-	"license": "BSD-2-Clause",
-	"keywords": [
-		"nested set",
-		"nested set model"
-	]
+  "name": "nestedjs",
+  "version": "1.1.0",
+  "description": "A lightweight library for working with the Nested Set Model",
+  "author": "Ferdi Schmidt",
+  "main": "nested-set-model.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "url": "https://github.com/uitgewis/nestedjs"
+  },
+  "license": "BSD-2-Clause",
+  "keywords": [
+    "nested set",
+    "nested set model"
+  ],
+  "devDependencies": {
+    "mocha": "^3.0.2"
+  }
 }
