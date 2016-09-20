@@ -16,8 +16,6 @@ var NestedSetModel = function(model, options) {
         return a[self.options.left] - b[self.options.left];
     });
 
-    var self = this;
-
     // create an index
     for(var index in model) {
         if (!model.hasOwnProperty(index)) {
