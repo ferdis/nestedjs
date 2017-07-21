@@ -5,7 +5,7 @@ NestedJS is a lightweight library to implement the nested set model
 in JavaScript applications. 
 
 The [Nested Sets Model](https://en.wikipedia.org/wiki/Nested_set_model)
-is a technique used for representing hierachrial data as a tree-like data
+is a technique used for representing hierarchical data as a tree-like data
 structure.
 
 Although very convienient and fast when implemented using a relational 
