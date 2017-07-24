@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "title": "root",
+        "lf": 1,
+        "rg": 12
+    },
+    {
+        "id": 4,
+        "title": "child",
+        "lf": 3,
+        "rg": 8
+    },
+    {
+        "id": 2,
+        "title": "parent",
+        "lf": 2,
+        "rg": 9
+    },
+    {
+        "id": 3,
+        "title": "middle",
+        "lf": 10,
+        "rg": 11
+    },
+    {
+        "id":5,
+        "title": "child",
+        "lf": 4,
+        "rg": 7
+    },
+    {
+        "id":6,
+        "title": "leaf",
+        "lf": 5,
+        "rg": 6
+    }
+]
